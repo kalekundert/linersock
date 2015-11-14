@@ -7,7 +7,7 @@ import distutils.core
 # $ python setup.py register -r pypi
 # $ python setup.py sdist upload -r pypi
 
-version = '1.0'
+version = '1.1'
 distutils.core.setup(
         name='linersock',
         version=version,
