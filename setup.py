@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import distutils.core
 
 # Uploading to PyPI
@@ -5,7 +7,7 @@ import distutils.core
 # $ python setup.py register -r pypi
 # $ python setup.py sdist upload -r pypi
 
-version = '0.0'
+version = '1.0'
 distutils.core.setup(
         name='linersock',
         version=version,
