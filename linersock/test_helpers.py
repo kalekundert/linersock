@@ -17,7 +17,7 @@ class Message (object):
         return values[0]
 
     def __repr__(self):
-        return str(hash(self))
+        return '{}({})'.format(self.__class__.__name__, hash(self))
 
 
 class FirstMessage (Message):
@@ -81,7 +81,20 @@ class Outbox (list):
 
 
 
-def connect(pipes=1, reverse=False, integrate=lambda x: x):
+def make_pipe():
+    return connect(1)
+
+def make_pipes(num_pipes, reverse=False):
+    return connect(num_pipes, reverse)
+
+def close_pipe(pipe):
+    disconnect(pipe)
+
+def close_pipes(pipes):
+    disconnect(*pipes)
+
+
+def connect(pipes=1, reverse=False):
     host, port = 'localhost', 10271
 
     # Create a web of client server connections.
