@@ -1,5 +1,15 @@
 import errno, socket, struct, pickle
 
+# Things to do
+# ============
+# Make the pipe more robust against malformed or malicious packets:
+#
+# 1. Add a check-sum byte to the header.  If a packet with a bad checksum comes 
+#    in, discard it and log an error (somehow).
+# 
+# 2. Catch any exceptions that are raised during unpacking and log an error if 
+#    any are caught.
+
 class Host:
     """
     Accept any number of incoming network connections.  For each connection, a 
@@ -234,10 +244,7 @@ class Pipe:
         """
 
         def pack(self, message):
-            # The second parameter to dumps() tells pickle which protocol (i.e.
-            # file format) to use.  I use protocol 2 since it is optimized for
-            # new-style classes, and message classes tend to be new-style.
-            return pickle.dumps(message, 2)
+            return pickle.dumps(message)
 
         def unpack(self, packet):
             return pickle.loads(packet)
@@ -273,6 +280,10 @@ class Pipe:
 
         self.serializer = Pipe.PickleSerializer()
         self.serializer_stack = []
+
+    def __repr__(self):
+        return "Pipe({}=>{})".format(
+                self.socket.getsockname(), self.socket.getpeername())
 
     def close(self):
         """
